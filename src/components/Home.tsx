@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+
 import { useAppDispatch, useAppSelector } from '../hook';
 import { addNewDestination, setNewDestinationId } from '../distanceSlice';
 import Destination from './Destination';
 import { Formik, Form } from 'formik';
 import { prepareCitiesQuery } from '../utils';
+
 
 export interface FormValues {
   destination0: [string, number, number] | null;
@@ -24,6 +26,7 @@ const Home: React.FC = () => {
   const destinationsShape = destinations
     .reduce((acc, destination) => ({ ...acc, [`destination${destination.id}`]: Yup.array().required('fill city of destination') || Yup.string().required('fill city of destination') }), {});
 
+  const yesterday = Date.now() - 86400000;
   const fieldsShape = {
     date: Yup.string().required('select date'),
     passengers: Yup.string().required('select the number of passengers'),
@@ -41,11 +44,12 @@ const Home: React.FC = () => {
     const { date, passengers, ...citiesValues } = values;
     const citiesQuery = prepareCitiesQuery(Object.values(citiesValues));
     navigate(`/search_results?date=${date}&passengers=${passengers}&cities=${citiesQuery}`);
-  }
+  };
+
+  const [passengers, setPassengers] = useState(1);
 
   return (
     <div className='home-page'>
-      <div>Home</div>
       <Formik
         initialValues={{
           destination0: null,
@@ -75,35 +79,57 @@ const Home: React.FC = () => {
             );
           };
 
+          const onIncrementPassengers = () => {
+            setPassengers(passengers => passengers + 1);
+            formikProps.setFieldValue(
+              'passengers',
+              passengers + 1,
+            );
+          };
+
+          const onDecrementPassengers = () => {
+            if (passengers === 1) {
+              return;
+            };
+            setPassengers(passengers => passengers - 1);
+            formikProps.setFieldValue(
+              'passengers',
+              passengers - 1,
+            );
+          };
+
+
           return (
             <Form>
               <div className='distances'>
-                {destinations.map(({ id }) => {
-
-                  return (
-                    <Destination
-                      key={id}
-                      id={id}
-                      {...formikProps}
-                    />
-                  )
-                })}
+                {destinations.map(({ id }) => (
+                  <Destination
+                    key={id}
+                    id={id}
+                    {...formikProps}
+                  />
+                ))}
               </div>
+              <button className='add-destination' onClick={onAddDestinationClick}>
+                Add Destination
+              </button>
+
               <div className='rest-form-parameters'>
+                <div className='date'>
+                  <div>Date</div>
+                  <input onChange={onDateChange} type='date' name='date' min={new Date().toISOString().split('T')[0]} />
+                </div>
+
                 <div className='passengers'>
                   <label htmlFor='pasengers'>Passengers</label>
-                  <div className='passengers-input-container'>
-                    <input onInput={onPassengersInput} type='number' min={1} name='passengers' />
-                    <button>+</button>
-                    <button>-</button>
+                  <div className='input-container'>
+                    <button className='minus' type='button' onClick={onDecrementPassengers}>-</button>
+                    <input type='number' min={1} name='passengers' disabled value={passengers} />
+                    <button className='plus' type='button' onClick={onIncrementPassengers}>+</button>
                   </div>
                 </div>
-                <div className='date'>
-                  <input onChange={onDateChange} type='date' name='date' />
-                </div>
-              </div>
 
-              <button onClick={onAddDestinationClick}>Add Destination</button>
+              </div>
               <input className='submit' type='submit' value='submit' disabled={!isSubmittingAllowed} />
             </Form>
           )

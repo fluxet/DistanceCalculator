@@ -30,7 +30,7 @@ const earthRadiusKm = 6371;
 
 export const prepareCitiesQuery = (cities: TCities): string => cities
   .reduce((acc: string, [cityName, latitude, longitude]) => acc
-    ? `${acc}+${cityName}_${latitude}_${longitude}`
+    ? `${acc}|${cityName}_${latitude}_${longitude}`
     : `${cityName}_${latitude}_${longitude}`, '');
 
 const getMatchedCities = (userText: string) => (userText.length)
@@ -38,11 +38,12 @@ const getMatchedCities = (userText: string) => (userText.length)
   : [];
 
 export const parseCities = (query: string) => query
-  .split(' ')
+  .split('|')
   .map((str) => str.split('_'))
   .map(([city, lat, lon]) => [city, +lat, +lon]) as TCities;
 
-// ----------------------------------------------------------------------------------------
+// ------------------------------- distance calculation ----------------------------------------------------
+
 const deg2rad = (deg: number) => deg * (Math.PI / 180);
 
 const calculateDistance = (city1: TCity, city2: TCity) => {
@@ -59,13 +60,19 @@ const calculateDistance = (city1: TCity, city2: TCity) => {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   const distance = earthRadiusKm * c;
-  return distance.toFixed(2) + ' km';
+  return distance.toFixed(2);
 };
 
 export const getDistances = (cities: TCities) => cities
   .reduce((acc, city, i) => (cities[i + 1])
-    ? [...acc, calculateDistance(city, cities[i + 1])]
+    ? [...acc, +calculateDistance(city, cities[i + 1])]
     : acc, []);
+
+export const getDistancesFields = (distances: number[]) => distances
+  .map((distance) => `${distance} km`);
+
+export const getTotalDistance = (distances: number[]) => distances
+  .reduce((acc, distance) => acc + distance, 0);
 
 // ----------------------- backend endpoints imitation: ----------------------
 
@@ -85,5 +92,5 @@ export const getAsyncDistances = (cities: TCities) => new Promise((resolve, reje
       reject(new Error('Oops! Something went wrong!'));
     }
     resolve(getDistances(cities));
-  }, 5000)
+  }, serverImitationDelayMs)
 })

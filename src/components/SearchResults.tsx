@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { parseCities } from '../utils';
 import { requestDistancesCalculation } from '../distanceSlice';
 import { useAppDispatch, useAppSelector } from '../hook';
 import ResponseWaiting from './ResponseWaiting';
 import ResponseError from './ResponseError';
+import ResponseSuccess from './ResponseSuccess';
 
 const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -14,8 +15,6 @@ const SearchResults: React.FC = () => {
   const passengers = searchParams.get('passengers');
   const responseStatus = useAppSelector(state => state.distance.responseStatus) as ('loading' | 'rejected' | 'success');
   const distances = useAppSelector(state => state.distance.distances);
-  console.log('responseStatus: ', responseStatus);
-  console.log('distances: ', distances);
 
   const cities = parseCities(citiesQuery);
 
@@ -26,24 +25,10 @@ const SearchResults: React.FC = () => {
   const contentByStatus = {
     loading: <ResponseWaiting />,
     rejected: <ResponseError />,
-    success: <div>123</div>,
+    success: <ResponseSuccess cities={cities} date={date} passengers={passengers} distances={distances} />
   };
 
   return contentByStatus[responseStatus];
-
-  return (
-    <div>
-      <div className='cities'>
-        {cities.map(([city]) => (
-          <div key={city}>{city}</div>
-        ))}
-      </div>
-
-      <div className='link'>
-        <Link to="/">Back</Link>
-      </div>
-    </div>
-  );
 }
 
 export default SearchResults;

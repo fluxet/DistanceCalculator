@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { ErrorMessage, FormikProps } from 'formik';
 import { useAppDispatch, useAppSelector } from '../hook';
@@ -10,8 +10,9 @@ interface IDestinationProps extends FormikProps<FormValues> {
   id: number;
 };
 
-const Destination: React.FC<IDestinationProps> = ({ id, setFieldValue, ...restProps }) => {
+const Destination: React.FC<IDestinationProps> = ({ id, setFieldValue, errors, ...restProps }) => {
   const dispatch = useAppDispatch();
+  const destinationName = `destination${id}` as keyof FormValues;
   const matchedCities = useAppSelector(state => state.distance.matchedCities);
   const responseStatus = useAppSelector(state => state.distance.responseStatus);
   const focusedDestinationId = useAppSelector(state => state.distance.currentDestinationId);
@@ -19,13 +20,14 @@ const Destination: React.FC<IDestinationProps> = ({ id, setFieldValue, ...restPr
   const destinationLabel = (id === 0) ? 'City of origin' : 'City of destination';
   const isLoading = id === focusedDestinationId && responseStatus === 'loading';
   const isResponseError = id === focusedDestinationId && responseStatus === 'rejected';
+  const [isTouched, setIsTouched] = useState(false);
+  const isCurrentFieldError = isResponseError || (isTouched && !!errors[destinationName]);
   const isAdditionalDestination = id > 1;
-  const destinationName = `destination${id}`;
 
   const override: CSSProperties = {
     position: 'absolute',
-    top: '8px',
-    left: '50%',
+    top: '40px',
+    left: '40%',
     transform: 'translateX(-50%)',
     zIndex: '100',
   };
@@ -52,6 +54,7 @@ const Destination: React.FC<IDestinationProps> = ({ id, setFieldValue, ...restPr
   };
 
   const onAutocompleteBlur = ({ target }: React.FocusEvent<HTMLInputElement>) => {
+    setIsTouched(true);
     const { value } = target as HTMLInputElement;
 
     if (!value) {
@@ -75,28 +78,32 @@ const Destination: React.FC<IDestinationProps> = ({ id, setFieldValue, ...restPr
     dispatch(deleteDestination(id));
   };
 
+  const ErrorComponent = (msg: string) => <div className='error-message'>{msg}</div>;
+
   return (
     <div className='autocomplete'>
+      <div className='label'>{destinationLabel}</div>
       <Autocomplete
         id={`${id}`}
+        className={isCurrentFieldError ? 'invalid' : ''}
         options={matchedCities}
         sx={{ width: 300 }}
         onInputChange={onInputChange}
         onChange={onChange}
         getOptionLabel={([name]) => name}
-        renderInput={(params) => <TextField name={destinationName} {...params} label={destinationLabel} />}
+        renderInput={(params) => <TextField name={destinationName} {...params} label='' />}
         onFocus={onAutocompleteFocus}
         onBlur={onAutocompleteBlur}
       />
       {isResponseError
-        ? <div>{responseErrorMessage}</div>
-        : <ErrorMessage className='error_message' name={destinationName} component='div' />
+        ? <div className='server-error-message'>{responseErrorMessage}</div>
+        : <ErrorMessage render={ErrorComponent} name={destinationName} component='div' />
       }
       <ClipLoader
         cssOverride={override}
         loading={isLoading}
       />
-      {isAdditionalDestination && <button onClick={onDeleteDestinationClick}>delete</button>}
+      {isAdditionalDestination && <button className='delete-destination' onClick={onDeleteDestinationClick}>delete</button>}
     </div>
   );
 }

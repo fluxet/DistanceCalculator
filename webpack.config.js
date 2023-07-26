@@ -12,10 +12,8 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(jpg|png|svg)$/,
-                use: {
-                    loader: 'url-loader',
-                },
+                test: /\.(png|jpg|jpeg|gif)$/i,
+                type: "asset/resource",
             },
             {
                 test: /\.tsx?$/,

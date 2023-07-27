@@ -400,3 +400,55 @@ body {
     padding-left: 0;
   }
 }
+
+
+@media (min-width: 1100px) {
+  .home-page {
+    
+    form {
+      display: flex;
+      margin: auto;
+      padding-left: 50px;
+      width: 800px;
+      flex-wrap: wrap;
+    }
+
+
+    .distances {
+      margin: 0px;
+      margin-left: 70px;
+    }
+
+    .add-destination {
+      margin: 0px;
+      margin-left: 70px;
+      margin-right: 50%;
+      order: 4;
+    }
+
+    .rest-form-parameters {
+      display: flex;
+      margin-top: 0px;
+      margin-left: 30px;
+      margin-bottom: 70px;
+      flex-direction: column-reverse;
+      width: 400px;
+
+      .date {
+        width: 130px;
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+    .submit {
+      margin: auto;
+      margin-top: 50px;
+      margin-left: 270px;
+      width: 100px;
+      order: 5;
+    }
+  }
+}

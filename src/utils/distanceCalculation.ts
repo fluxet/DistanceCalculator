@@ -1,5 +1,4 @@
-type TCity = [string, number, number];
-export type TCities = TCity[];
+import { TCities, TCity } from "../types";
 
 const earthRadiusKm = 6371;
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAsyncDistances, getAsyncMatchedCities } from './utils/backendEndpointsImitation';
-import { TCities } from './utils/distanceCalculation';
+import { TCities } from './types';
 
 
 export const requestMatchedCities = createAsyncThunk(

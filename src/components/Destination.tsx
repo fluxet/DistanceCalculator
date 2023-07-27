@@ -1,14 +1,10 @@
 import React, { CSSProperties, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { ErrorMessage, FormikProps } from 'formik';
+import { ErrorMessage } from 'formik';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { clearMatchedCities, deleteDestination, requestMatchedCities, setCity, setCurrentDestinationId } from '../distanceSlice';
 import { ClipLoader } from 'react-spinners';
-import { FormValues } from './Home';
-
-interface IDestinationProps extends FormikProps<FormValues> {
-  id: number;
-};
+import { FormValues, IDestinationProps } from '../types';
 
 const Destination: React.FC<IDestinationProps> = ({ id, setFieldValue, errors, ...restProps }) => {
   const dispatch = useAppDispatch();

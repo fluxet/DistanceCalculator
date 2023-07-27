@@ -1,4 +1,5 @@
-import { TCities, getDistances } from "./distanceCalculation";
+import { TCities } from "../types";
+import { getDistances } from "./distanceCalculation";
 import { getMatchedCities } from "./utils";
 
 const serverImitationDelayMs = 2000;

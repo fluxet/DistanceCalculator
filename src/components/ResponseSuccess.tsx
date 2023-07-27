@@ -1,15 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom'
-import { TCities, getDistancesFields, getTotalDistance } from '../utils/distanceCalculation';
-
-
-export interface IResponseSuccessProps {
-  cities: TCities;
-  distances: number[];
-  date: string;
-  passengers: string;
-}
+import { getDistancesFields, getTotalDistance } from '../utils/distanceCalculation';
+import { IResponseSuccessProps } from '../types';
 
 const ResponseSuccess: React.FC<IResponseSuccessProps> = ({ cities, date, passengers, distances }) => {
   console.log('distances: ', distances);

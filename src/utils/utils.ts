@@ -1,4 +1,4 @@
-import { TCities } from "./distanceCalculation";
+import { TCities } from "../types";
 
 const cities: TCities = [
   ['Paris', 48.856614, 2.352222],

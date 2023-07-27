@@ -7,15 +7,7 @@ import { addNewDestination, setNewDestinationId } from '../distanceSlice';
 import Destination from './Destination';
 import { Formik, Form } from 'formik';
 import { prepareCitiesQuery } from '../utils/utils';
-
-
-
-export interface FormValues {
-  destination0: [string, number, number] | null;
-  destination1: [string, number, number] | null;
-  date: string;
-  passengers: number;
-}
+import { FormValues } from '../types';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();

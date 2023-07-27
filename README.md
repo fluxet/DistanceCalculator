@@ -1,6 +1,6 @@
-Editable table widget with sorting by columns option.
+Test task for Mozio
 
-[Demo](https://fluxet.github.io/editable-table/)
+[Demo](https://fluxet.github.io/distance-calculator/)
 
 ## Install
 

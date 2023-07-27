@@ -14,6 +14,7 @@ const ResponseSuccess: React.FC<IResponseSuccessProps> = ({ cities, date, passen
   console.log('distances: ', distances);
   const distancesFields = getDistancesFields(distances);
   const totalDistance = getTotalDistance(distances);
+  const passengersContent = (+passengers === 1) ? 'passenger' : 'passengers';
 
   return (
     <div className='search-success'>
@@ -31,11 +32,11 @@ const ResponseSuccess: React.FC<IResponseSuccessProps> = ({ cities, date, passen
 
       <div className='conclusions'>
         <div><span className='bold'>{`${totalDistance} km`}</span>is total distance</div>
-        <div><span className='bold'>{passengers}</span>passengers</div>
+        <div><span className='bold'>{passengers}</span>{passengersContent}</div>
         <div className='bold'>{date}</div>
       </div>
 
-      <div className='link'>
+      <div className='link-back'>
         <Link to="/">Back</Link>
       </div>
     </div>

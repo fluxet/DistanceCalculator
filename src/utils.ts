@@ -25,7 +25,7 @@ const cities: TCities = [
   ['Fail', 0, 0],
 ];
 
-const serverImitationDelayMs = 1000;
+const serverImitationDelayMs = 2000;
 const earthRadiusKm = 6371;
 
 export const prepareCitiesQuery = (cities: TCities): string => cities

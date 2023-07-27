@@ -1,6 +1,6 @@
 Test task for Mozio
 
-[Demo](https://fluxet.github.io/distance-calculator/)
+[Demo](https://fluxet.github.io/DistanceCalculator/)
 
 ## Install
 

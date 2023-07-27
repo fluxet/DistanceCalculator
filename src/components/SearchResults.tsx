@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { parseCities } from '../utils';
+
 import { requestDistancesCalculation } from '../distanceSlice';
 import { useAppDispatch, useAppSelector } from '../hook';
 import ResponseWaiting from './ResponseWaiting';
 import ResponseError from './ResponseError';
 import ResponseSuccess from './ResponseSuccess';
+import { parseCities } from '../utils/utils';
 
 const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();

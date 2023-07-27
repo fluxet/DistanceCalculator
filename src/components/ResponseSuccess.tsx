@@ -1,7 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom'
-import { TCities, getDistancesFields, getTotalDistance } from '../utils';
+import { TCities, getDistancesFields, getTotalDistance } from '../utils/distanceCalculation';
+
 
 export interface IResponseSuccessProps {
   cities: TCities;

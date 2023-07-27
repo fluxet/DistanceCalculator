@@ -6,7 +6,8 @@ import { useAppDispatch, useAppSelector } from '../hook';
 import { addNewDestination, setNewDestinationId } from '../distanceSlice';
 import Destination from './Destination';
 import { Formik, Form } from 'formik';
-import { prepareCitiesQuery } from '../utils';
+import { prepareCitiesQuery } from '../utils/utils';
+
 
 
 export interface FormValues {
@@ -65,14 +66,8 @@ const Home: React.FC = () => {
         {(formikProps) => {
           const isSubmittingAllowed = formikProps.dirty && formikProps.isValid && (responseStatus !== 'rejected');
 
-          const onPassengersInput = (evt: any) => {
-            formikProps.setFieldValue(
-              'passengers',
-              evt.target.value,
-            );
-          };
 
-          const onDateChange = (evt: any) => {
+          const onDateChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
             formikProps.setFieldValue(
               'date',
               evt.target.value,
